@@ -1388,12 +1388,20 @@ function addSplatsTo(c, n, hex) {
 function clearSplats(c) { for (const s of c.splatList) if (s.parent) s.parent.remove(s); c.splatList = []; c.splatN = 0; }
 function placeChar(c, x, z, yaw) { c.x = x; c.z = z; c.y = groundAt(x, z, 0); c.vx = c.vz = c.vy = 0; c.yaw = yaw || 0; c.lookYaw = c.yaw; c.lastX = x; c.lastZ = z; }
 
-/* physics: push out of furniture, stand on low things, fall with gravity */
+/* physics: push out of furniture, stand on top of anything a jump reaches, fall with gravity.
+   0.2.1: round things (tables, barrels, hay bales, donuts, big balls) have a top you can stand on too. Before, landing
+   on one sank you into it and the push-out shoved you off sideways, like a teleport. Thin posts and sticks (under
+   0.2 m across) still have no top. You stay up on a box until your middle is within 0.2 m of its edge (was 0.12). */
+const EDGE = 0.2, POST_R = 0.2;
 function groundAt(x, z, feet) {
   let gh = 0;
   for (const b of boxes) {
     if (feet < b.y2 - 0.3) continue;
-    if (x > b.x1 - 0.12 && x < b.x2 + 0.12 && z > b.z1 - 0.12 && z < b.z2 + 0.12 && b.y2 > gh) gh = b.y2;
+    if (x > b.x1 - EDGE && x < b.x2 + EDGE && z > b.z1 - EDGE && z < b.z2 + EDGE && b.y2 > gh) gh = b.y2;
+  }
+  for (const y of cyls) {
+    if (feet < y.y2 - 0.3 || y.r < POST_R) continue;
+    if (Math.hypot(x - y.x, z - y.z) < y.r + 0.1 && y.y2 > gh) gh = y.y2;
   }
   return gh;
 }
@@ -1412,7 +1420,7 @@ function moveChar(c, dt) {
       }
     }
     for (const y of cyls) {
-      if (c.y >= y.y2 - 0.1 || c.y + 1.2 <= y.y1) continue;
+      if (c.y >= y.y2 - (y.r < POST_R ? 0.1 : 0.3) || c.y + 1.2 <= y.y1) continue;   // on top of a round thing: no push (like boxes)
       const dx = c.x - y.x, dz = c.z - y.z, d = Math.hypot(dx, dz), need = y.r + R;
       if (d < need) { if (d < 1e-4) { c.x += need; } else { c.x += dx / d * (need - d); c.z += dz / d * (need - d); } }
     }
@@ -1957,9 +1965,19 @@ function seekerAI(s, dt) {
       if (!t || t.caught) { s.state = 'look'; s.stT = 0; s.look0 = s.yaw; s.target = null; break; }
       s.lostT += dt;
       const d = Math.hypot(t.x - s.x, t.z - s.z);
-      // they're standing up on a table or box right next to us: hop up after them (furniture is no safe place)
+      // they're up on furniture: climb after them (furniture is no safe place). 0.2.1: if it's too high for one jump,
+      // hop onto something lower first (box → higher box), and walk around walls to the first step
       s.hopT = (s.hopT || 0) - dt;
-      if (d < 3 && (t.y - s.y > 0.3 || s.hopT > 0)) {
+      const up = t.y - s.y > 0.3, st = s.hopT > 0 && s.step ? s.step : up ? (s.step = climbStep(s, t)) : (s.step = null);
+      if (st) {
+        const sd = Math.hypot(st.x - s.x, st.z - s.z);
+        if (sd < 3 || s.hopT > 0) {
+          if (s.onGround && s.hopT <= 0 && sd < 2.4 && st.y - s.y > 0.3) { s.vy = JUMP_V; s.onGround = false; s.hopT = 0.8; }
+          steer(s, st.x, st.z, spd * 1.15, dt); s.lookYaw = s.yaw; s.lostT = 0; s.lastSeen = { x: t.x, z: t.z };
+          break;
+        }
+      }
+      if (d < 3 && (t.y - s.y > 0.3 || s.hopT > 0)) {   // no step found: hop straight at them (as before)
         if (s.onGround && t.y - s.y > 0.3) { s.vy = JUMP_V; s.onGround = false; s.hopT = 0.8; }   // keep heading for them until the hop lands
         steer(s, t.x, t.z, spd * 1.15, dt); s.lookYaw = s.yaw; s.lostT = 0; s.lastSeen = { x: t.x, z: t.z };
         break;
@@ -1969,7 +1987,7 @@ function seekerAI(s, dt) {
       if (d < 3.2 && (s.y > 0.3 || clearLine(s.x, s.z, t.x, t.z))) steer(s, t.x, t.z, spd * 1.15, dt);
       else {
         s.repathT = (s.repathT || 0) - dt;
-        if (s.repathT <= 0 || !s.path) { const g = s.lastSeen || t; setGoal(s, g.x, g.z); s.repathT = 0.4; }
+        if (s.repathT <= 0 || !s.path) { const g = s.step || s.lastSeen || t; setGoal(s, g.x, g.z); s.repathT = 0.4; }   // up high: walk to the first step
         follow(s, spd * 1.15, dt);
       }
       s.lookYaw = s.yaw;
@@ -1981,6 +1999,23 @@ function seekerAI(s, dt) {
       break;
     default: s.state = 'patrol';
   }
+}
+/* where a seeker at s should jump next to reach t up high: t itself when one jump reaches, else the top (that a jump
+   reaches and that's not above t) nearest to t. A jump goes up about 1.31 m (JUMP_V² / 2·GRAV) and you may land up
+   to 0.3 m below a top, so JUMP_UP is what one hop climbs, with a little to spare. null = no way up. */
+const JUMP_UP = JUMP_V * JUMP_V / (2 * GRAV) + 0.2;
+function climbStep(s, t) {
+  if (t.y - s.y <= JUMP_UP) return { x: t.x, z: t.z, y: t.y };
+  let best = null, bs = 1e9;
+  const tryTop = (x, z, y) => {
+    if (y <= s.y + 0.3 || y > s.y + JUMP_UP || y > t.y + 0.05) return;
+    const ds = Math.hypot(x - s.x, z - s.z); if (ds > 9) return;
+    const sc = Math.hypot(x - t.x, z - t.z) + ds * 0.4 - (y - s.y) * 0.5;   // near them, near me, and as high as possible
+    if (sc < bs) { bs = sc; best = { x, z, y }; }
+  };
+  for (const b of boxes) if (b.x2 - b.x1 >= 0.5 && b.z2 - b.z1 >= 0.5) tryTop(clamp(t.x, b.x1 + 0.25, b.x2 - 0.25), clamp(t.z, b.z1 + 0.25, b.z2 - 0.25), b.y2);
+  for (const y of cyls) if (y.r >= POST_R) tryTop(y.x, y.z, y.y2);
+  return best;
 }
 function pickPatrol(s) {
   const hiders = G.chars.filter(h => h.role === 'hider' && !h.caught);
@@ -2497,7 +2532,7 @@ function catchCheck() {
     if (s.role !== 'seeker' || s.state === 'count') continue;
     for (const h of G.chars) {
       if (h.role !== 'hider' || h.caught) continue;
-      if (Math.hypot(h.x - s.x, h.z - s.z) >= 1.12 || Math.abs(h.y - s.y) >= 2) continue;
+      if (Math.hypot(h.x - s.x, h.z - s.z) >= 1.12 || Math.abs(h.y - s.y) >= 1.3) continue;   // 0.2.1: about a seeker's own height (was 2 m)
       // computer seekers only tag someone they have noticed (or are chasing), not by brushing past by accident
       if (s.bot && !(s.state === 'chase' && s.target === h) && (s.susp.get(h) || 0) < 0.6) continue;
       catchHider(h, s);
@@ -2897,7 +2932,7 @@ addEventListener('resize', resize);
      for 10 s, the match ends.
    Transports (the same small "room" interface as Bonk Royale): PeerJS WebRTC links (the website; the relay
    PS_RELAY carries the game when two devices can't link directly), and ?mplocal (tabs on one computer, for tests). */
-const PS_VERSION = '0.2';   // docs/RELEASING.md: Stable 0.1, Beta 0.2, Alpha 0.3 at the start; a bug fix adds 0.0.1
+const PS_VERSION = '0.2.1';   // docs/RELEASING.md: Stable 0.1, Beta 0.2, Alpha 0.3 at the start; a bug fix adds 0.0.1
 // Relay (TURN) for when two devices can't link directly (cellular data, strict school or office Wi-Fi). For now this is the
 // family's Metered.ca relay from Bonk Royale (free plan, no card on file: the worst case of misuse is running out of the
 // free monthly allowance, never a bill). It is public inside the page. To give Paint & Seek its own, change it here.
