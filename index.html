@@ -129,6 +129,7 @@ h1.logo .p1{color:#ff2fa0}h1.logo .p2{color:#ffb703}h1.logo .p3{color:#3fa7ff}
 #shopTabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:4px 0 2px}
 #shopTabs button{border:3px solid #e3e7ef;background:#fff;border-radius:14px;font-size:16px;font-weight:800;padding:5px 10px;color:var(--ink)}
 #shopTabs button.on{border-color:var(--paint);background:#ffe3f2}
+@media (max-height:460px){#shopTabs{gap:4px}#shopTabs button{font-size:13px;padding:2px 7px;border-width:2px}#shop .vsub{font-size:13px}}   /* phones held sideways: tabs fit on fewer rows */
 .item .sw.gold{box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),0 0 10px rgba(255,200,80,.9)}
 #shopCustom{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin:8px auto;max-width:560px}
 #shopCustom[hidden]{display:none}
@@ -179,6 +180,8 @@ h1.logo .p1{color:#ff2fa0}h1.logo .p2{color:#ffb703}h1.logo .p3{color:#3fa7ff}
 #drawUi .pill{pointer-events:auto}
 #drawUi .drawTop{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;justify-content:center;font-size:17px}
 #drawUi .drawTop span{font-size:13px;font-weight:600;opacity:.75}
+body.drawing #toast{bottom:auto;top:calc(56px + var(--st))}   /* messages go to the top while you paint, not over the paint bar */
+@media (max-height:460px){#drawUi .drawTop span{display:none}#drawUi .drawBar{gap:5px;padding:4px 8px}#drawBrushes button{min-width:38px;padding:2px 4px;font-size:17px}}
 #drawUi .drawBar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:6px 10px;max-width:96vw}
 #drawBrushes{display:flex;gap:4px;flex-wrap:wrap}
 #drawBrushes button{border:2px solid transparent;background:#f1f3f8;border-radius:12px;font-size:20px;line-height:1.1;padding:3px 6px;display:flex;flex-direction:column;align-items:center;color:var(--ink);min-width:44px}
@@ -458,23 +461,28 @@ body.touch #parts .sep,body.touch #parts .mouseonly{display:none}
   <p><b>🔍 Seeker smarts</b> (1–10): how fast the computer seekers walk, how far and sharp they see, how often they get a hunch, and how well they throw paint.</p>
   <h3>⭐ Points and 🪙 coins</h3>
   <p>Hiders get 120 points for staying hidden the whole round, or fewer points the sooner they are found. Seekers get 30 points for every player they find, plus a bonus for finding everyone. The most points at the end wins the match!</p>
-  <p>You also earn coins every round. Spend them in the <b>Shop</b> on hats and paint ball colors.</p>
+  <p>You also earn coins every round. Spend them in the <b>Shop</b>: hats, paint ball designs (plain colors are free), brushes, launchers, celebrations for when you find someone, lobby emotes, jingles, voices and jukebox songs.</p>
   <h3>🙈 Hiding</h3>
   <p>Point the dot at a wall, couch or bush close to you and press <b>PAINT</b> to copy its color, or press <b>🎨 COLORS</b> (<kbd>Q</kbd>) to pick any color you like. Stand right up against something the same color as you.</p>
   <p><b>Body parts:</b> tap 🧍 All, 🙂 Head, 👕 Body, 💪 Arms or 👖 Legs first (keys <kbd>1</kbd>–<kbd>5</kbd>) to paint just that part, so you can be two colors at once, like a red shirt by the couch and brown legs on the wood floor.</p>
   <p><b>Poses:</b> tap the pose button (<kbd>X</kbd>) to Stand, Sit or Lie down. Sitting makes you short enough to hide behind low furniture. Lying down flat is almost invisible if you paint yourself like the floor, but you can only crawl. Jumping stands you back up. <b>Hold still</b> and your eyes close, which makes you even harder to see.</p>
-  <p>Listen while you hide: you hear the seekers' <b>footsteps</b>, and your <b>heartbeat</b> gets faster when one comes close (with the sound off, watch for "👣 A seeker is close"). Hold still and let them walk past!</p>
+  <p><b>🖌️ Brush</b> (<kbd>B</kbd>): paint yourself by hand. You stand still and the camera turns to face you; drag on yourself to paint, and drag next to you to turn around. Pick a brush, its size, how see-through it is (strength) and a color, and use ↩️ Undo for mistakes. The brush you pick is used by PAINT too. Seekers look at the side of you they can see, so paint your front to match what's behind you!</p>
+  <p>In the lobby, stand on the pink mat of the <b>🎨 paint booth</b> to design your look. Every round starts with it.</p>
+  <p>Listen while you hide: you hear the seekers' <b>footsteps</b> (from the side they're on: try headphones), and your <b>heartbeat</b> gets faster when one comes close (with the sound off, watch for "👣 A seeker is close"). Hold still and let them walk past! <b>Seekers can hear you too:</b> running is loud, and if you move right next to a seeker you might giggle.</p>
   <p>Watch the seeker: <b>?</b> means it noticed something, <b>!</b> means RUN! If paint splats you, press PAINT again to cover the spots. If you get found, you become a seeker too and help find the rest! (You can change this on the menu: "Found players".) When YOU are the seeker, the players you find sit on the bench, so every find is yours. With 5 or more computer players a second computer player seeks too (when depends on the Difficulty). Standing up on a table won't save you: seekers hop up after you!</p>
   <h3>🔍 Seeking</h3>
-  <p>Look for shapes that don't belong, and blinking eyes. Listen for giggles! Press <b>THROW</b> to throw a paint ball. A splatted player gets bright spots and runs away. <b>Bump into</b> a player to tag it.</p>
+  <p>Look for shapes that don't belong, and blinking eyes. Listen for giggles and running footsteps! Press <b>THROW</b> to throw a paint ball. A splatted player gets bright spots and runs away. <b>Bump into</b> a player to tag it.</p>
   <h3>👫 Playing together</h3>
   <p>Play with friends on other devices: one person taps <b>👫 Play together</b> and <b>👑 Host a game</b>, and gets a 4-letter code. Friends type the code and tap <b>Join</b>. The host taps <b>✅ Allow</b> for each friend, then <b>▶ Start the match</b>. Computer players fill the other places.</p>
   <p>When a person seeks, they wait with their eyes shut while the others hide. Hiding? Tap <b>✅ I'm hidden!</b> (<kbd>R</kbd>) when you're ready: once everyone has, the seeker starts a few seconds later.</p>
   <p>Only the host can pause. <b>Restarting a round</b> follows the rule the host picked: only the host can restart, or everyone votes and more than half must say 👍. If someone's connection drops, a computer player plays for them until they come back.</p>
   <h3>🎮 Controls</h3>
   <p><b>iPad:</b> drag on the left side to move, drag on the right side to look, and tap the big buttons.</p>
-  <p><b>Computer:</b> <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move, mouse looks (click the game first), <kbd>Click</kbd> or <kbd>E</kbd> paint/throw, <kbd>Space</kbd> jump, <kbd>P</kbd> pause, mouse wheel zooms.</p>
-  <p><b>Control type</b> on the menu: Auto switches to touch controls when you touch the screen, and back when you use a mouse. <b>Graphics</b> on Auto is Fast with touch controls and Pretty with a mouse, and turns itself down if the game keeps running slowly.</p>
+  <p><b>Computer:</b> <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move, mouse looks (click the game first), <kbd>Click</kbd> or <kbd>E</kbd> paint/throw, <kbd>Space</kbd> jump, <kbd>P</kbd> pause, <kbd>B</kbd> brush, <kbd>1</kbd>–<kbd>9</kbd> emotes in the lobby, mouse wheel zooms.</p>
+  <p><b>Control type</b> on the menu: Auto switches to touch controls when you touch the screen, and back when you use a mouse. <b>Graphics</b> and <b>Textures</b> on Auto: the first time the game runs it tests your device and picks what stays smooth, and it turns itself down if the game keeps running slowly (⚡ Check my device again tests it again).</p>
+  <h3>🎵 Music and sound</h3>
+  <p><b>Music:</b> 🎹 Live follows the game (it tiptoes while you hide and speeds up when a seeker comes close), and 💿 Recorded plays real songs. <b>Vibe:</b> each map's own music, or Silly, Spy or Adventure everywhere. <b>Volume:</b> music, effects and voices each have a slider. In the lobby, walk up to the 📻 jukebox to play your songs.</p>
+  <p>🔐 There are secrets to find, too…</p>
   <div class="links"><button class="big green" id="helpBack" style="min-width:160px">OK!</button></div>
 </div></div>
 
@@ -2131,7 +2139,7 @@ function enterDraw(booth) {
 }
 function exitDraw(quiet) {
   if (!G.draw) return;
-  const d = G.draw; G.draw = null; $('drawUi').classList.remove('on');
+  const d = G.draw; G.draw = null; $('drawUi').classList.remove('on'); document.body.classList.remove('drawing');
   if (d.booth && G.player) { SHOP.look = lookOf(G.player); saveShop(); if (!quiet) { toast('💾 Saved! Every round starts with this look.', 2.5); sfx.coin(); } }   // the booth always keeps your design
   if (d.gun && d.painted && !quiet) {   // the gallery: a new framed design, now on your launcher
     SHOP.gunLooks = (SHOP.gunLooks || []).concat(galleryGun.sk.cv.toDataURL('image/png')).slice(-FRAMES.length); saveShop();
@@ -2142,7 +2150,7 @@ function exitDraw(quiet) {
   $('tbtns').classList.toggle('on', TOUCH && (inRound() || G.phase === 'lobby'));
 }
 function drawUi() {
-  const ui = $('drawUi'); ui.classList.add('on'); $('parts').classList.remove('on'); $('tbtns').classList.remove('on'); $('emotes').classList.remove('on');
+  const ui = $('drawUi'); ui.classList.add('on'); document.body.classList.add('drawing'); $('parts').classList.remove('on'); $('tbtns').classList.remove('on'); $('emotes').classList.remove('on');
   $('drawTitle').textContent = G.draw.gun ? '🔫 Paint your launcher' : G.draw.booth ? '🎨 Paint booth: design your look' : '🖌️ Paint yourself';
   $('drawDone').textContent = G.draw.gun ? '💾 Save design' : G.draw.booth ? '💾 Save my look' : '✔ Done';
   $('drawClear').hidden = !G.draw.booth && !G.draw.gun;
@@ -2423,7 +2431,7 @@ function sbuf(name) {
   AUD.loading[name] = true;
   fetch((name.startsWith('music/') ? '' : 'sounds/') + name + '.mp3').then(r => r.ok ? r.arrayBuffer() : Promise.reject(new Error(r.status)))
     .then(b => new Promise((res, rej) => AC.decodeAudioData(b, res, rej)))
-    .then(buf => { AUD.bufs[name] = trimStart(buf); AUD.fails = 0; })
+    .then(buf => { AUD.bufs[name] = trimStart(buf); AUD.fails = 0; delete AUD.loading[name]; })
     .catch(() => { delete AUD.loading[name]; if (++AUD.fails > 8) AUD.bad = true; });
   return null;
 }
@@ -2710,19 +2718,39 @@ function liveStep(st, song, step, when, spb, w) {
     if (lv === 0 && Math.random() < 0.25) note(st.lead, m + 1, when + spb * 0.5, 0.12, spb);   // tiptoe: a sneaky little extra note
   }
 }
-/* 💿 recorded songs: decoded once (at most two kept, the song and the chase song), looped, faded */
-function recPlay(name) {
-  const R = MUS.rec || (MUS.rec = { cur: null, src: null, g: null, cache: [] });
-  if (R.cur === name) return;
-  const b = sbuf('music/' + name); if (!b) return;   // still loading: keep what's playing
-  if (R.src) { const og = R.g, os = R.src; og.gain.setTargetAtTime(0, AC.currentTime, 0.25); setTimeout(() => { try { os.stop(); } catch (e) { /* stopped */ } }, 1500); }
-  R.cur = name; R.src = AC.createBufferSource(); R.g = AC.createGain(); R.src.buffer = b; R.src.loop = true;
-  R.g.gain.setValueAtTime(0, AC.currentTime); R.g.gain.linearRampToValueAtTime(1, AC.currentTime + 1.2);
-  R.src.connect(R.g).connect(AUD.music); R.src.start();
-  R.cache = R.cache.filter(n => n !== name).concat(name);
-  while (R.cache.length > 2) { const old = R.cache.shift(); if (old !== R.cur) delete AUD.bufs['music/' + old]; }   // keep memory small on iPads
+/* 💿 recorded songs (0.3.6): streamed by two <audio> elements wired into the music volume, one fading out while the
+   next fades in. Before, each song was decoded whole into memory (about 40 MB for a 3-minute song); on an iPad later
+   in a match that could fail, and after several failures every sound file stopped loading (Recorded music went
+   silent and only the little synth effects played). iPads only let an <audio> element play after a tap, so the
+   first tap after the sound starts "unlocks" both elements (recUnlock). */
+const REC = { els: [], cur: 0, name: null, unlocked: false, want: null };
+function recEl(i) {
+  if (REC.els[i]) return REC.els[i];
+  const a = new Audio(); a.loop = true; a.preload = 'auto'; a.setAttribute('playsinline', '');
+  const g = AC.createGain(); g.gain.value = 0; AC.createMediaElementSource(a).connect(g).connect(AUD.music);
+  return REC.els[i] = { a, g };
 }
-function recStop() { const R = MUS.rec; if (!R || !R.src) return; const og = R.g, os = R.src; og.gain.setTargetAtTime(0, AC.currentTime, 0.3); setTimeout(() => { try { os.stop(); } catch (e) { /* stopped */ } }, 1500); R.src = null; R.cur = null; }
+function recUnlock() {
+  if (REC.unlocked || !AC || !AUD.music || location.protocol === 'file:') return;
+  REC.unlocked = true;
+  for (const i of [0, 1]) { const e = recEl(i); if (!e.a.src) { e.a.src = 'music/carefree.mp3'; e.a.muted = true; const p = e.a.play(); if (p && p.then) p.then(() => { if (REC.name === null || REC.els[REC.cur] !== e) e.a.pause(); e.a.muted = false; }).catch(() => { e.a.muted = false; REC.unlocked = false; }); else e.a.muted = false; } }
+}
+for (const ev of ['pointerdown', 'keydown', 'touchend']) addEventListener(ev, () => { if (AC && SET.sound) recUnlock(); }, true);
+function recPlay(name) {
+  if (REC.name === name || location.protocol === 'file:') return;
+  const t = AC.currentTime, old = REC.els[REC.cur];
+  if (old && REC.name) { old.g.gain.cancelScheduledValues(t); old.g.gain.setTargetAtTime(0, t, 0.3); const oa = old.a; setTimeout(() => { if (REC.els[REC.cur] !== old) oa.pause(); }, 1600); }
+  REC.cur = REC.name ? 1 - REC.cur : REC.cur; const e = recEl(REC.cur);
+  e.a.src = 'music/' + name + '.mp3'; e.a.muted = false;
+  e.g.gain.cancelScheduledValues(t); e.g.gain.setValueAtTime(0, t); e.g.gain.linearRampToValueAtTime(1, t + 1.2);
+  REC.name = name;
+  const p = e.a.play(); if (p && p.catch) p.catch(() => { REC.name = null; });   // not allowed yet (no tap since the sound started): try again
+}
+function recStop() {
+  if (!REC.name) return;
+  const e = REC.els[REC.cur]; REC.name = null; if (!e) return;
+  e.g.gain.cancelScheduledValues(AC.currentTime); e.g.gain.setTargetAtTime(0, AC.currentTime, 0.3); setTimeout(() => { if (!REC.name || REC.els[REC.cur] !== e) e.a.pause(); }, 1600);
+}
 function songFor(w) {
   if (w.slot === 'juke') return G.juke;
   const list = w.chase ? SONGS.chase : SONGS[w.slot] || SONGS.lobby;
@@ -2888,7 +2916,7 @@ function updateCamera() {
   if (G.draw) {
     const d = G.draw, T = d.target || { x: p.x, y: p.y + poseOf(p).mid + 0.05, z: p.z };   // you, or the big blaster in the gallery
     camera.position.set(T.x + Math.sin(d.yaw) * Math.cos(d.pitch) * d.dist, T.y + Math.sin(d.pitch) * d.dist, T.z + Math.cos(d.yaw) * Math.cos(d.pitch) * d.dist);
-    camera.lookAt(T.x, T.y, T.z); setGhost(null); aimHit.ok = false; aimHit.c = null; return;
+    camera.lookAt(T.x, T.y - (innerHeight < 500 ? 0.5 : 0.15), T.z); setGhost(null); aimHit.ok = false; aimHit.c = null; return;   // aim a bit low: you sit above the paint bar (phones: well above)
   }
   if (G.spectate) { const s = G.chars.find(c => c.role === 'seeker'); if (s) { p = s; input.yaw += angDiff(s.yaw, input.yaw) * 0.06; input.pitch += (0.35 - input.pitch) * 0.05; } }
   camD.set(Math.sin(input.yaw) * Math.cos(input.pitch), -Math.sin(input.pitch), Math.cos(input.yaw) * Math.cos(input.pitch));
@@ -3641,14 +3669,17 @@ function closeShop() {
   else if (G.shopFrom === 'final' && G.phase === 'final') { $('finCoins').textContent = '🪙 You have ' + SHOP.coins + ' coins.'; showScreen('final'); }
   else showScreen('menu');
 }
-let PREV = null;
-function shopPreviewStop() { if (PREV) { try { PREV.stop(); } catch (e) { /* done */ } PREV = null; } G.shopPreview = null; }
+/* a taste of a jukebox song in the shop: 8 seconds from a bit into the song, streamed (it was decoded whole before) */
+let PREV = null, PREV_T = 0;
+function shopPreviewStop() { if (PREV) PREV.pause(); PREV_T = 0; G.shopPreview = null; }
 function shopPreviewTick() {
-  if (!G.shopPreview || !AC) return;
-  const b = sbuf('music/' + G.shopPreview); if (!b) return;
-  shopPreviewStop();
-  const src = AC.createBufferSource(), g = AC.createGain(), t = AC.currentTime; src.buffer = b; g.gain.setValueAtTime(0.9, t); g.gain.setValueAtTime(0.9, t + 7); g.gain.linearRampToValueAtTime(0, t + 8);
-  src.connect(g).connect(AUD.fx); src.start(t, Math.min(20, b.duration * 0.2)); src.stop(t + 8.1); PREV = src;
+  if (!AC) return;
+  if (G.shopPreview) {
+    const id = G.shopPreview; G.shopPreview = null;
+    if (!PREV) { PREV = new Audio(); PREV.setAttribute('playsinline', ''); AC.createMediaElementSource(PREV).connect(AUD.fx); }
+    PREV.src = 'music/' + id + '.mp3'; PREV.onloadedmetadata = () => { PREV.currentTime = Math.min(20, PREV.duration * 0.2); }; PREV.volume = 0.9;
+    const p = PREV.play(); if (p && p.catch) p.catch(() => {}); PREV_T = 8;
+  } else if (PREV_T > 0) { PREV_T -= 1 / 60; if (PREV_T <= 1) PREV.volume = Math.max(0, PREV_T * 0.9); if (PREV_T <= 0) PREV.pause(); }
 }
 function drawShop() {
   $('shopCoins').textContent = '🪙 ' + (meCheat('rich') ? '∞' : SHOP.coins);
@@ -3676,7 +3707,7 @@ function shopClick(kind, id) {
   } else { $('shopMsg').textContent = ''; sfx.pop(); }
   G.shopPick = kind === 'paint' && id === 'custom';   // "Any color" opens the color grid below
   if (kind === 'emote') { $('shopMsg').textContent = it.price ? $('shopMsg').textContent : '💃 ' + it.name + ' is free. Use it in the lobby!'; }
-  else if (kind === 'song') { ac(); G.shopPreview = id; sbuf('music/' + id); }   // a song: a taste of it (see shopTick)
+  else if (kind === 'song') { ac(); recUnlock(); G.shopPreview = id; }   // a song: a taste of it (shopPreviewTick)   // a song: a taste of it (see shopTick)
   else if (kind === 'jingle') { ac(); jingle('win', id); }
   else if (kind === 'voice') { ac(); if (G.player) { const old = G.player.cos; G.player.cos = Object.assign({}, old || {}, { v: id }); speak(G.player, 'hi'); G.player.cos = old; } }
   else if (SHOP_KINDS[kind].using) SHOP[SHOP_KINDS[kind].using] = id;
@@ -4748,7 +4779,7 @@ addEventListener('resize', resize);
      for 10 s, the match ends.
    Transports (the same small "room" interface as Bonk Royale): PeerJS WebRTC links (the website; the relay
    PS_RELAY carries the game when two devices can't link directly), and ?mplocal (tabs on one computer, for tests). */
-const PS_VERSION = '0.3.5';   // docs/RELEASING.md: Stable 0.1, Beta 0.2, Alpha 0.3 at the start; a bug fix adds 0.0.1
+const PS_VERSION = '0.3.6';   // docs/RELEASING.md: Stable 0.1, Beta 0.2, Alpha 0.3 at the start; a bug fix adds 0.0.1
 // Relay (TURN) for when two devices can't link directly (cellular data, strict school or office Wi-Fi). For now this is the
 // family's Metered.ca relay from Bonk Royale (free plan, no card on file: the worst case of misuse is running out of the
 // free monthly allowance, never a bill). It is public inside the page. To give Paint & Seek its own, change it here.
